@@ -83,6 +83,85 @@
 						<li>Java 8 enhancements</li>
 						</ul>
 				</section>
+
+				<section>
+					<h3>Basics of Java Annotation</h3>
+					<pre><code data-trim contenteditable>
+@interface MyAnnotation {
+	String str();
+	int val();
+}
+					</code></pre>
+				<ul>
+				<li> @interface for annotation </li>
+				<li> All annotation extends Annotation </li>
+				<li> Only member functions </li>
+				</ul>
+				</section>
+
+				<section>
+					<h3>Basics of Java Annotation</h3>
+					<pre><code data-trim contenteditable>
+@MyAnnotation(str="Example", val = 1)
+public static void myMethod() {...}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Built-in Java Annotations</h3>
+					<p> Java has built-in annotations for generous purpose.</p>
+					<ul>
+						<li>Annotations for code</li>
+						<li>Annotations for Annotations</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Built-in Java Annotations for Code</h3>
+					<ul>
+						<li>
+							@Override 
+						</li>
+						<li>
+							@Deprecated 
+						</li>
+						<li>
+							@supressWarnings
+						</li>
+						<li>
+							@SafeVarargs <span style="font-size:80%;color:steelblue">Suppress warnings for all functions with a generics <em>varargs</em> parameter (Java 7) </span>
+						</li>
+						<li>
+							@FunctionalInterface <span style="font-size:80%;color:steelblue"> Specifies that the type declaration is a functional interface (Java 8) </span>
+						</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h3>Built-in Java Annotations for Annotations</h3>
+					<ul>
+						<li>
+							<a href="#/11">@Target</a> 
+						</li>
+						<li>
+							<a href="#/12">@Retention</a> 
+						</li>
+						<li>
+							<a href="#/13">@Documented</a> 
+						</li>
+						<li>
+							<a href="#/14">@Inherited</a> 
+						</li>
+						<li>
+							<a href="#/15">@Repeatable</a> 
+						</li>
+						<li>
+							<a href="#/16">@Native</a>
+						</li>
+					</ul>
+				</section>
+
 				<!-- Example of nested vertical slides -->
 				<section>
 					<section>
