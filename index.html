@@ -44,7 +44,7 @@
 					<h1>Java Annotation</h1>
 					<h3>Denpendency Injection and Beyond</h3>
 					<p>
-						<small>Created by <a href="http://hakim.se">Yong Fu</a> </small>
+						<large style="color:steelblue">Yong Fu</a> </large>
 					</p>
 				</section>
 
@@ -93,7 +93,7 @@
 }
 					</code></pre>
 				<ul>
-				<li> @interface for annotation </li>
+				<li> <i style="color:steelblue">@interface</i> for annotation </li>
 				<li> All annotation extends Annotation </li>
 				<li> Only member functions </li>
 				</ul>
@@ -112,7 +112,7 @@ public static void myMethod() {...}
 					<p> Java has built-in annotations for generous purpose.</p>
 					<ul>
 						<li>Annotations for code</li>
-						<li>Annotations for Annotations</li>
+						<li>Annotations for annotations (Meta-annotation)</li>
 					</ul>
 				</section>
 
@@ -129,17 +129,17 @@ public static void myMethod() {...}
 							@supressWarnings
 						</li>
 						<li>
-							@SafeVarargs <span style="font-size:80%;color:steelblue">Suppress warnings for all functions with a generics <em>varargs</em> parameter (Java 7) </span>
+							@SafeVarargs <br> <span style="font-size:80%;color:steelblue">Suppress warnings for all functions with a generics <em>varargs</em> parameter (Java 7) </span>
 						</li>
 						<li>
-							@FunctionalInterface <span style="font-size:80%;color:steelblue"> Specifies that the type declaration is a functional interface (Java 8) </span>
+							@FunctionalInterface <br> <span style="font-size:80%;color:steelblue"> Specifies that the type declaration is a functional interface (Java 8) </span>
 						</li>
 					</ul>
 				</section>
 
 
 				<section>
-					<h3>Built-in Java Annotations for Annotations</h3>
+					<h3>Built-in Java Annotations for annotations (Meta-annotation)</h3>
 					<ul>
 						<li>
 							<a href="#/11">@Target</a> 
@@ -158,10 +158,17 @@ public static void myMethod() {...}
 
 				<section>
 					<h3>@Target</h3>
-					Annotation type applied
+					Program element type be annotated
 					<pre><code data-trim contenteditable>
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.METHOD, ElementType.Type)
 public @interface MetaAnnotationType {
+    ...
+}
+    				</code></pre>	
+
+    				<pre><code data-trim contenteditable>
+@MetaAnnotationType(...)
+class myAnnotatedClass{
     ...
 }
     				</code></pre>			
@@ -170,12 +177,7 @@ public @interface MetaAnnotationType {
 				<section>
 					<h3>@Retention</h3>
 					Annotations can be hold during compilation (SOURCE), recorded into class file (CLASS) or in runtime (VM)
-					<pre><code data-trim contenteditable>
-@Target(ElementType.ANNOTATION_TYPE)
-public @interface MetaAnnotationType {
-    ...
-}
-    				</code></pre>			
+						
 				</section>
 
 				<section>
@@ -218,7 +220,7 @@ public class mySubClass extends mySuperClass { ... }
 							<a href="#/17">@Repeatable</a>
 						</li>
 						<li>
-							<a href="#/18">@Native Annotation</a>
+							<a href="#/18">Native Annotation</a>
 						</li>
 					</ul>
 				</section>
@@ -264,7 +266,7 @@ public void doPeriodicCleanup() { ... }
 
     			<section>
     				<h3>
-    					Custom Annotations
+    					Process Custom Annotations
     				</h3>
     				<ul>
     					<li>
@@ -318,13 +320,14 @@ public @interface PrintAnnotation {}
 @SupportedAnnotationTypes({"com.ociweb.annotation.PrintAnnotation"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class PrintAnnotationProcessor extends AbstractProcessor {
-    public PrintAnnotationProcessor() { super(); }
+@Override
+	public synchronized void init(ProcessingEnvironment env){ }
 @Override
 public boolean process(Set&lt? extends TypeElement&gt annotations, RoundEnvironment roundEnvironment) {
         for (TypeElement te : annotations) {
             for (Element e : roundEnvironment.getElementsAnnotatedWith(te)) {
                 String message = "Annotation " + te.getSimpleName();
-    		    processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
+    		    env.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
             }
         }
     	return true;
@@ -335,7 +338,8 @@ public boolean process(Set&lt? extends TypeElement&gt annotations, RoundEnvironm
 
     			<section>
     				<h3>Dagger</h3>
-    				Dagger is a java tool that implements the dependency injection design pattern.
+    				Dagger is a java tool that implements the dependency injection design pattern. Compatible to JSR330  (Dependency Injection for Java).
+
     			</section>
 
     			<section>
@@ -354,28 +358,6 @@ import javax.inject.Singleton;
 }
 				</code></pre>  				
     			</section>
-
-    			<section>
-    				<h3>
-    					Dagger Example
-    				</h3>
-					<pre><code data-trim contenteditable>
-import javax.inject.Inject;
-public class Tweeter {
-    private final TwitterApi twitterApi;
-    
-    @Inject
-    public Tweeter(TwitterApi twitterApi) {
-        this.twitterApi = twitterApi;
-    }
-    
-    public void tweet(String tweetChars) {
-        twitterApi.sendTweet(tweetChars);
-    }
-}
-				</code></pre>  				
-    			</section>
-
 
     			<section>
     				<h3>
@@ -403,6 +385,54 @@ public class TweeterModule {
     ...
 }
 				</code></pre>  				
+
+    			</section>
+
+    			<section>
+    				<h3>
+    					Dagger Example
+    				</h3>
+					<pre><code data-trim contenteditable>
+import javax.inject.Inject;
+public class Tweeter {
+    private final TwitterApi twitterApi;
+    
+    @Inject
+    public Tweeter(TwitterApi twitterApi) {
+        this.twitterApi = twitterApi;
+    }
+    
+    public void tweet(String tweetChars) {
+        twitterApi.sendTweet(tweetChars);
+    }
+}
+				</code></pre>  				
+    			</section>
+
+
+    			
+    			<section>
+    				<h3>
+    					Dagger Example
+    				</h3>
+					<pre><code data-trim contenteditable>
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TwitterApi {
+
+    private final String user;
+    private final OkHttpClient httpClient;
+
+    @Inject
+    public TwitterApi(String user, OkHttpClient httpClient) {
+        this.user = user;
+        this.httpClient = httpClient;
+    }
+    ...
+}
+				</code></pre>  				
     			</section>
 
     			<section>
@@ -410,17 +440,12 @@ public class TweeterModule {
     					Dagger Annotation Processing
     				</h3>
 					<pre><code data-trim contenteditable>					
-@AutoService(Processor.class)
 public final class ComponentProcessor extends BasicAnnotationProcessor {
-private InjectBindingRegistry injectBindingRegistry;
-private FactoryGenerator factoryGenerator;
-private MembersInjectorGenerator membersInjectorGenerator;
-@Override
+...
 public SourceVersion getSupportedSourceVersion() {...}
-@Override
 public Set&ltString&gt getSupportedOptions() {...}
-@Override
-protected Iterable&ltrocessingStep&gt initSteps() {
+// return processing steps
+protected Iterable&ltProcessingStep&gt initSteps() {
     Messager messager = processingEnv.getMessager();
     Types types = processingEnv.getTypeUtils();
     Elements elements = processingEnv.getElementUtils();
@@ -436,6 +461,29 @@ protected Iterable&ltrocessingStep&gt initSteps() {
 				</code></pre>  				
     			</section>
 
+
+    			<section>
+    				<h3>
+    					Dagger Annotation Processing
+    				</h3>
+					<pre><code data-trim contenteditable>					
+public void process(SetMultimap&ltClass&lt? extends Annotation&gt, Element&gt elementsByAnnotation) {
+    Map&ltElement, ValidationReport&ltTypeElement&gt&gt builderReportsByComponent =
+        processComponentBuilders(elementsByAnnotation.get(Component.Builder.class));
+  ...
+  }
+				</code></pre>  				
+					<pre><code data-trim contenteditable>					
+private Map&ltElement, ValidationReport&ltTypeElement&gt&gt processComponentBuilders(
+      Set&lt? extends Element&gt componentBuilderElements) {
+    ...
+    for (Element element : componentBuilderElements) {
+    	...
+    }
+  }
+				</code></pre>  				
+    			</section>
+
     			<section>
     				<h3>Beyond Dependency Injection</h3>
     				<ul>
@@ -443,7 +491,7 @@ protected Iterable&ltrocessingStep&gt initSteps() {
     						Checker
     					</li>
     					<li>
-    						Power management
+    						APE
     					</li>
     				</ul>
     			</section>
@@ -460,13 +508,86 @@ public class Example {
 					</code></pre>
     			</section>
 
+    			<section>
+    				<h3>A set of built-in checkers</h3>
+    				<ol>
+    					<li>
+    						Units checker: @Area, @Current
+    					</li>
+    					<li>
+    						Regex checker: @Regex
+    					</li>
+    					<li>
+    						Lock checker: @GuardedBy
+    					</li>
+    					<li>
+    						And your own checkers
+    					</li>
+    				</ol>
+    			</section>
 
-				<section style="text-align: left;">
-					<h1>Summary</h1>
-					<p>
-						- <a href="http://slides.com">Try the online editor</a> <br>
-						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-					</p>
+    			<section>
+    				APE uses annotation for power management of Android
+    				<p align="right" font="italic" ><i>ICSE 2015</i></p>
+    			</section>
+
+    			<section>
+    	<blockquote cite="http://cseweb.ucsd.edu/~nnikzad/files/APE_ICSE_preprint.pdf">
+						&ldquo;power management
+policies defer the execution of expensive operations until
+the device enters a state that minimizes the cost of that
+operation.&rdquo;
+					</blockquote>
+    			</section>
+
+    			<section>
+    				<h3>Example</h3>
+    				<p style="color:steelblue">Defer uploads, for up to 30 minutes, until
+the Wi-Fi radio has connected to a network. </p>
+    			</section>
+
+    			<section>
+					<pre><code data-trim contenteditable>					
+    			while(true) {
+@APE_WaitUntil("(WiFi.Connected, inf)", MaxDelay=1800)
+uploadSensorData();
+}
+					</code></pre>
+    			</section>
+
+
+    			<section>
+    				<h3>Under the hood</h3>
+    				<ul>
+    				<li>
+    				Java Annotation processor translates the annotations to RPC of a runtime.
+    				</li>
+    				<li>
+    				The RPC of the runtime is blocked until the runtime detects that all contions are satisfied.
+    				</li>
+    			</section>
+
+
+    			<section>
+    			<h3>More applications</h3>
+    			<ul>
+    				<li>Hibernate</li>
+    				<li>Spring</li>
+    				<li>FindBugs</li>
+    				<li>JUnit</li>
+    				<li>...</li>
+    			</ul>
+    			</section>
+
+				<section>
+					<h2>Summary</h2>
+					<ul>
+					<li> Annotation is Metadata</li>
+					<li> Java provides annotation processor</li>
+					<li> Move stuff other than main logic into annotation</li>
+					<li> Build your own annotation!</li>
+					</ul>
+					
 				</section>
 
 			</div>
